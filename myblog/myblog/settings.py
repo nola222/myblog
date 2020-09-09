@@ -134,6 +134,6 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'publicStatic')]
 AUTH_USER_MODEL = 'account.MyUser'
 
 # 设置媒体资源保存路径
-MEDIA_URL = '/media'
+MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
