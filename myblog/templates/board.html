@@ -1,10 +1,81 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html>
+{%  extends "base.html" %}
+{% load staticfiles %}
+{% block content %}
+    <main class="r_box">
+        <!--留言列表-->
+        <div class="gbook">
+            {% for list in page_info.object_list %}
+                <div class="fb">
+                <ul style="background: url({% static "images/user.jpg" %}) no-repeat top 20px left 10px;">
+                    <p class="fbtime">
+                        <span>{{ list.created|date:"Y-m-d" }}</span>
+                        {{ list.name }}
+                    </p>
+                    <p class="fbinfo">{{ list.content }}</p>
+                </ul>
+                </div>
+            {% endfor %}
+            <!--分页功能-->
+            <div class="pagelist">
+                {% if page_info.has_previous %}
+                    <a href="{% url 'board' id page_info.previous_page_number %}">上一页</a>
+                {% endif %}
+                {% if page_info.object_list %}
+                    {% for page in page_info.paginator.page_range %}
+                        {% if page_info.number == page %}
+                            <a href="javascript:;" class="curPage">{{ page }}</a>
+                        {% else %}
+                            <a href="{% url 'board' id page %}">{{ page }}</a>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+                {% if page_info.has_next %}
+                    <a href="{% url 'board' id page_info.next_page_number %}">下一页</a>
+                {% endif %}
+            </div>
+            <hr>
+            <!--网页表单-->
+            <div class="gbox">
+                <form action="" method="post" name="saypl" onsubmit="return CheckPl(document.saypl)">
+                    {% csrf_token %}
+                    <p><strong>来说点什么吧...</strong></p>
+                    <p>
+                        <span>您的姓名：</span>
+                        <input type="text" name="name" id="name">*
+                    </p>
+                    <p>
+                        <span>联系邮箱：</span>
+                        <input type="text" name="email" id="email">*
+                    </p>
+                    <p>
+                        <span>留言内容：</span>
+                        <textarea name="content" cols="60" rows="12" id="lytext"></textarea>
+                    </p>
+                    <p><input type="submit" name="Submit3" value="提交"></p>
+                </form>
+            </div>
+        </div>
+    </main>
+{% endblock %}
+{% block script %}
+    <script>
+        function CheckPl(obj) {
+            if (obj.lytext.value=="") {
+                alert("请写下您想说的话！");
+                obj.lytext.focus();
+                return false;
+            }
+            if (obj.name.value=="") {
+                alert("请写下您的名字！");
+                obj.name.focus();
+                return false;
+            }
+            if (obj.email.value=="") {
+                alert("请写下您的邮箱地址！");
+                obj.name.focus();
+                return false;
+            }
+            return true;
+        }
+    </script>
+{% endblock %}
