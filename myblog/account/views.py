@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect
 from .models import MyUser
+from album.models import AlbumInfo
+from article.models import ArticleTag
 from django.contrib.auth import login, logout, authenticate
 from django.urls import reverse
 
@@ -47,7 +49,13 @@ def register(request):
 
 
 def user_login(request):
-    """登录
+    """"登录
+
+    Args:
+        request(object): Request对象
+
+    Returns:
+
     """
     title = '登录博客'
     page_title = '用户登录'
@@ -74,3 +82,19 @@ def user_login(request):
             kwargs = {'id': request.user.id, 'page': 1}
             return redirect(reverse('article', kwargs=kwargs))
     return render(request, 'user.html', locals())
+
+
+def about(request, id):
+    """关于我
+
+    Args:
+        request(object): Request对象
+        id(int): 用户id
+
+    Returns:
+
+    """
+    album = AlbumInfo.objects.filter(user_id=id)
+    tag = ArticleTag.objects.filter(user_id=id)
+    user = MyUser.objects.filter(id=id).first()
+    return render(request, 'about.html', locals())
