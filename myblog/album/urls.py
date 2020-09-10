@@ -8,4 +8,9 @@
 
 重要说明:
 """
+from django.urls import path
+from .views import *
 
+urlpatterns = [
+    path('<int:id>/<int:page>.html', album, name='album'),  # 图片墙
+]
