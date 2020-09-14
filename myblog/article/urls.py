@@ -15,6 +15,7 @@ from .views import *
 
 urlpatterns = [
     path('', RedirectView.as_view(url='user/login.html')),  # 首页自动跳转到登录页
-    path('<int:id>/<int:page>.html', article, name='article'), # 文章列表
+    path('<int:id>/<int:page>.html', article, name='article'),  # 文章列表
+    path('detail/<int:id>/<int:aId>.html', detail, name='detail'),  # 文章详情
 
 ]
