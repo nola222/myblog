@@ -1,10 +1,44 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html>
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block content %}
+    <!--文章列表-->
+    <main class="r_box">
+        {% for list in page_info.object_list %}
+            <li>
+                <i>
+                    <a href="{% url 'detail' id list.id %}">
+                    {% if list.article_photo %}
+                        <img src="{{ list.article_photo.url}}">
+                    {% else %}
+                        <img src="{% static 'images/pic.png' %}">
+                    {% endif %}
+                    </a>
+                </i>
+                <h3>
+                <a href="{% url 'detail' id list.id %}">
+                    {{ list.title }}
+                </a>
+                </h3>
+                <p>{{ list.content|safe }}</p>
+            </li>
+        {% endfor %}
+    <!--分页功能-->
+    <div class="pagelist">
+        {% if page_info.has_previous %}
+            <a href="{% url 'article' id page_info.previous_page_number %}">上一页</a>
+        {% endif %}
+        {% if page_info.object_list %}
+            {% for page in page_info %}
+                {%  if page_info.number == page %}
+                    <a href="javascript:;" class="curPage">{{ page }}</a>
+                {% else %}
+                    <a href="{% url 'article' id page %}">{{ page }}</a>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+        {% if page_info.has_next %}
+            <a href="{% url 'article' id page_info.next_page_number %}">下一页</a>
+        {% endif %}
+    </div>
+    </main>
+{% endblock %}
